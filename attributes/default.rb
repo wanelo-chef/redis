@@ -13,7 +13,7 @@ case platform
     default["redis"]["packages"] = %w(redis-server redis-client)
 end
 
-default["redis"]["install_via"] = "source"
+default["redis"]["install_via"] = "package"
 
 default["redis"]["user"] = "redis"
 default["redis"]["version"] = "2.6.4"
@@ -45,7 +45,7 @@ default["redis"]["timeout"] = 0
 default["redis"]["rdb"] = {
     "enabled" => true,
     "filename" => "dump.rdb",
-    "compression" => "no",
+    "compression" => false,
     "frequency" => [
         {"seconds" => "900", "changes" => "1"}
     ]
@@ -55,7 +55,7 @@ default["redis"]["aof"] = {
     "enabled" => false,
     "filename" => "appendonly.aof",
     "fsync" => "everysec",
-    "no_fsync_on_rewrite" => "no",
+    "no_fsync_on_rewrite" => false,
     "rewrite_percent" => "100",
     "rewrite_size" => "64mb"
 }

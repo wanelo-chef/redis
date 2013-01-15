@@ -28,8 +28,8 @@ port <%= @conf['port'] %>
 # specified all the interfaces will listen for incoming connections.
 #
 # bind 127.0.0.1
-<% if @conf.has_key? :bindaddress %>
-bind <%= @conf[:bindaddress] %>
+<% if @conf.has_key? 'bindaddress' %>
+bind <%= @conf['bindaddress'] %>
 <% end %>
 
 # Specify the path for the unix socket that will be used to listen for
@@ -86,15 +86,17 @@ databases <%= @conf['database_count'] %>
 #
 #   Note: you can disable saving at all commenting all the "save" lines.
 
-<% if @conf[:bgsave] %>
-save 900 1
+<% if @conf['rdb']['enabled'] %>
+  <% @conf['rdb']['frequency'].each do |save| %>
+save <%= save['seconds'] %> <%= save['changes'] %>
+  <% end %>
 <% end %>
 
 # Compress string objects using LZF when dump .rdb databases?
 # For default that's set to 'yes' as it's almost always a win.
 # If you want to save some CPU in the saving child set it to 'no' but
 # the dataset will likely be bigger if you have compressible values or keys.
-rdbcompression <%= @conf['rdb']['compression' ]%>
+rdbcompression <%= @conf['rdb']['compression'] ? 'yes' : 'no' %>
 
 # The filename where to dump the DB
 dbfilename <%= @conf['rdb']['filename'] %>
@@ -207,7 +209,7 @@ appendfsync <%= @conf['aof']['fsync'] %>
 #
 # If you have latency problems turn this to "yes". Otherwise leave it as
 # "no" that is the safest pick from the point of view of durability.
-no-appendfsync-on-rewrite <%= @conf['aof']['no_fsync_on_rewrite'] %>
+no-appendfsync-on-rewrite <%= @conf['aof']['no_fsync_on_rewrite'] ? 'yes' : 'no' %>
 
 ############################### ADVANCED CONFIG ###############################
 

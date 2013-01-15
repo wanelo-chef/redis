@@ -17,4 +17,4 @@
 # limitations under the License.
 #
 
-include_recipe "redis::install#{node["redis"]["install_via"]}"
+include_recipe "redis::install_#{node["redis"]["install_via"]}"
